@@ -78,8 +78,6 @@ export function setSoal(nomorSoal) {
 
   const soal = soalData.data[nomorSoal - 1];
 
-  console.log("Setting soal nomor:", nomorSoal, soal);
-
   if (!soal) {
     console.error("Question not found for nomorSoal:", nomorSoal);
     return;
@@ -137,8 +135,7 @@ export function getInitials(user) {
   words.forEach((word, index) => {
     camelUser[index] = word.charAt(0).toUpperCase();
   });
-
-  console.log("Setting username:", camelUser.join(""));
+  
   // return camelUser.join("");
   $("#initial").text(camelUser.join(""));
 }

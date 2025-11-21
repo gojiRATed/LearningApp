@@ -43,7 +43,6 @@ async function getReferences() {
     const data = await response.json();
     savePreferences(data);
     generateOptions();
-    console.log("pref:", preferences);
   } catch (error) {
     console.error("Terjadi kesalahan:", error);
   }
@@ -77,7 +76,6 @@ async function getQuestions(nama = "contoh nama", kelasId = 10, mapelId = 1, tin
     const data = await response.json();
     sessionStorage.setItem("questions", JSON.stringify(data));
     setSoal(1);
-    console.log("Questions:", data);
   } catch (error) {
     console.error("Terjadi kesalahan:", error);
   }
@@ -105,7 +103,6 @@ async function validateAnswer(qId, question, answer) {
 
     // ⬇ Ambil raw response dulu
     const raw = await response.text();
-    console.log("raw response:", raw);
 
     if (!raw) {
       console.error("Response kosong dari server");
@@ -123,7 +120,6 @@ async function validateAnswer(qId, question, answer) {
       return;
     }
 
-    console.log("parsed:", data);
     correctAnswers[qId] = data.correct;
   } catch (error) {
     console.error("Terjadi kesalahan:", error);
@@ -138,7 +134,6 @@ $(document).ready(function () {
   $("#informasi").hide();
 
   $("#selectJenjang").on("change", function () {
-    console.log("Selected jenjang:", $(this).val());
     updateKelasOptions($(this).val());
   });
 
@@ -149,19 +144,19 @@ $(document).ready(function () {
     const kelasId = $("#selectKelas").val();
     const mapelId = $("#selectMapel").val();
     const jenjangId = $("#selectJenjang").val();
-    // console.log(nama, kelasId, mapelId, jenjangId);
 
     const kelas = preferences.kelas.find((k) => k.id == kelasId);
     const mapel = preferences.mapel.find((m) => m.id == mapelId);
     const jenjang = preferences.jenjang.find((j) => j.id == jenjangId);
-
-    // console.log("Selected Kelas:", kelas.urutan);
-    // console.log("Selected Mapel:", mapel.nama);
-    // console.log("Selected Jenjang:", jenjang.nama);
+    
+    if (mapel.nama.length > 16) {
+      $("#mapel").text(mapel.kode.toUpperCase());
+    } else {
+      $("#mapel").text(mapel.nama);
+    }
 
     $("#nama").text(nama);
     $("#kelas").text(kelas.urutan);
-    $("#mapel").text(mapel.nama);
     $("#jenjang").text(jenjang.kode.toUpperCase());
 
     $("#pStart").hide();
@@ -196,7 +191,7 @@ $(document).ready(function () {
     checkAnswer(currentSoal - 1, $(".is-active").data("jawaban") || $("#jawaban").val() || "");
 
     if (currentSoal == lastSoal) {
-      console.log("Quiz selesai!");
+      
       const totalCorrect = Object.values(correctAnswers).filter((v) => v === true).length;
 
       const lulus = totalCorrect >= lastSoal / 2;
@@ -239,7 +234,6 @@ $(document).ready(function () {
     currentSoal += 1;
     setSoal(currentSoal);
 
-    console.log("Correct Answers so far:", correctAnswers);
     $(this).hide();
   });
 });
