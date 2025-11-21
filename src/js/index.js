@@ -175,7 +175,7 @@ $(document).ready(function () {
     data.jenjang = jenjang;
 
     sessionStorage.setItem("user", JSON.stringify(data));
-    getQuestions(nama, parseInt(kelasId), parseInt(mapelId), parseInt(jenjangId), 20);
+    getQuestions(nama, parseInt(kelasId), parseInt(mapelId), parseInt(jenjangId), 10);
     getInitials(nama);
   });
 
